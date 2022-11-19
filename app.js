@@ -1,22 +1,28 @@
-const hello = document.querySelector(".hello:first-child h1")
+const loginForm = document.querySelector("#login-form")
+const loginInput = document.querySelector("#login-form input")
+const greeting = document.querySelector("#greeting")
 
-console.log(hello)
-hello.style.color = "tomato"
+const HIDDEN_CLASSNAME = "hidden"
+const USERNAME_KEY = "username"
 
-function titleOnClick(){
-    console.log("halo bang")
+function onLoginSubmit(tomato){
+    tomato.preventDefault()
+    const username = loginInput.value
+    loginForm.classList.add(HIDDEN_CLASSNAME)
+    localStorage.setItem(USERNAME_KEY, username)
+    paintGreetings(username)
 }
 
-function titleOnHover(){
-    //hello.setAttribute("style", "color: magenta")
-    hello.style.color = "magenta"
+function paintGreetings(username){
+    greeting.classList.remove(HIDDEN_CLASSNAME)
+    greeting.innerText = `Hello ${username}`
 }
 
-function titleOffHover(){
-    //hello.setAttribute("style", "color: tomato")
-    hello.style.color = "tomato"
-}
+const savedUsername = localStorage.getItem(USERNAME_KEY)
 
-hello.addEventListener("mouseover", titleOnHover)
-hello.addEventListener("mouseout", titleOffHover)
-hello.addEventListener("click", titleOnClick)
+if (savedUsername === null){
+    loginForm.classList.remove(HIDDEN_CLASSNAME)
+    loginForm.addEventListener("submit", onLoginSubmit)
+} else {
+    paintGreetings(savedUsername)
+}
